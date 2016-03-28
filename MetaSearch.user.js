@@ -4,7 +4,7 @@
 // @namespace   BlackNullerNS
 // @include     file:///*/btsearch.html*
 // @include     http*://blacknuller.github.io/btsearch.html*
-// @version     1.6.7
+// @version     1.6.8
 // @grant	 GM_xmlhttpRequest
 // @grant	 GM_setValue
 // @grant	 GM_getValue
@@ -2367,7 +2367,7 @@ bt.addSource("TGZ", function () {
 });
 
 bt.addSource("BIB", function () {
-    var bib = "https://bibliotik.org/torrents/?search={query}";
+    var bib = "https://bibliotik.me/torrents/?search={query}";
 
     return {
         url: {
@@ -2382,6 +2382,7 @@ bt.addSource("BIB", function () {
         onParse: {
             cleanup: ['time', '.taglist'],
             row: "#torrents_table > tbody > tr",
+            link_prepend: "https://bibliotik.me",
             sel: [
                 {text: "> td:has(a[href*='/torrents/']):eq(0)", link: "a[href*='/torrents/']:eq(0)"},
                 {text: "a[href*='peers']:eq(0)"},
