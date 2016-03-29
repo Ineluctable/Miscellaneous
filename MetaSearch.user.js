@@ -1577,7 +1577,7 @@ bt.addSource("BIB", function () {
         onParse: {
             cleanup: ['time', '.taglist'],
             row: "#torrents_table > tbody > tr",
-            link_prepend: "https://bibliotik.me",
+            link_prepend: "https://bibliotik.me/",
             sel: [
                 {text: "> td:has(a[href*='/torrents/']):eq(0)", link: "a[href*='/torrents/']:eq(0)"},
                 {text: "a[href*='peers']:eq(0)"},
@@ -3113,6 +3113,36 @@ bt.addSource("SCC", function () {
         },
 		onFilter: bt.filter3dMovies,
         icon: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAACfklEQVQ4jZXQyS/jcRzG8e//4UDSWFsS+y+EICHUkkgvloM4OAgHJ1WxJFycRELjTESNNUhHpwxVdNTUWGpiYpAOUarRQWNX7zlMKo3LmCd5HZ7P4XN4hBBC6EJD+R/63FyuDw8RQggxGBbGe40lJTGZkYFdq+XG6WS5rg4xGB7Oe0ykp3NkMKAvKMCgUuFcWmK1oQExGBWF33B8PINyOYE3P2tLC06z+bVb6utx6PUInUKB32R2Nju9vVibmxmOj2dUktBFR6NTKPii0XBzespIYiI6hQJjWRmPXi/iQ0wMgYwlJfienjgxmbA2NfGxqIjxlBS+trVxubfHkcHAeGoqtrY2AMRobCxvXe3vs9ffz6fiYpyLixhVKg6Gh9kfGuL27Ayvw4HX4fj7YDwhgUDmqioAXKurTGdmstPdjdtm42RhgaOZGexdXfjjXl9HTEkSgdbq63GtrABwc3LCkV6PpbaWzyoVa2o1662t3Lnd2Ds7mZIkxFBQEIFmCws51OlwW60AWGpqGIuIwLO1he/xEYD7iwtGZDKMSiViLDiYVyEhfNNoMJeWMhYczPH0NPaODsZlMmZzcpjLy2O+sJAfWi1Tcjmr1dWISZkMv+nISDbUajYbG7FUVODZ3OTl+Znf29tc7uxwYbNhkCQWlEpMBQUY09IQ+vBwAs1nZfG9vR3HwAB7PT14Dw54vrvj8eoKz8YGs5LET62W88VFZpOTEUa5nLfm4uKwVVaynJ/PvcuFo68Pu0aDXa3m18DA6xa3x8eI+ZgY3rKVl+M2mXi6vuZfEUIIYY6NJZBVqcSzvIzHYuHF58P38MCDy4V3dxePxcL5zAynExMIIcQfr3ecgShZoxMAAAAASUVORK5CYII="
+    };
+});
+
+bt.addSource("SDB", function () {
+    var sdb = "http://sdbits.org/browse.php?descriptions=0&search={query}";
+
+    return {
+        url: {
+            all: sdb,
+            movies: sdb + "&c1=1",
+            movies_dvd: sdb + "&c1=1&m2=1",
+            tv: sdb + "&c2=1",
+            mvids: sdb + "&c4=1",
+            docs: sdb + "&c3=1"
+        },
+        onParse: {
+            cleanup: ["#torrent-list > tbody > tr:eq(0)"],
+            row: "#torrent-list > tbody > tr",
+            link_prepend: "http://sdbits.org/",
+            sel: [
+                {
+                    text: "> td:eq(2) a:eq(0)",
+                    freeleech: "a.fl"
+                },
+                {text: "> td:eq(7)"},
+                {text: "> td:eq(5)", link: "a[href*='download.php']:eq(0)", noblank: true}
+            ]
+        },
+        onFilter: bt.filter3dMovies,
+        icon: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAIAAACQkWg2AAAAA3NCSVQICAjb4U/gAAACXElEQVQokUWST0+UZxTFz73vMwOpXRgZJoWFyEqTum5NCDuKjSxE1/oVjLHRryHfgA/QNuqC6NYmuKKBWm0rCSaEimF4h3dmXph5/t17u5jS3rO5q5t7zvnRxstXX0xONBoTzWaDi6LggpgAEACQwkxNVHJMMcYQvIs+MJEoRMU5R8xMxMQADABU1URFksQYQ4xuOBqamUzknJ0rHHFBBGYGCLDxqEiSnGL0PrrRcKgiKTVnZr6abrcly9HR0enZ2dTUFIhgFmKs6zrnnGKMMbi6Po0xXL58ZXFxcW/v45cXLqjqu9/frazcqnq9FGO73U4p/fjTz8Ozs5iSq+tB8I1Lly4eH5cbGxvMTEQEAPjl9etPnw6bzebq6u0b337z7NnzlDP3+72qV71//8f0dGt5+bu6Pi3LsuyWAPr9frcsPx8ebm5uzs7O9nq9QX/Ag/6gOql+3dpae7o2Nzf38OGDZqPR6XQAVFV11Okcd4739/cnJyerk5NBv8fee++D9/63t2+fPH5SluW9+/e8DwBSTCEEH/z8/PzBwd/jnVUFsFarxUQjP9rd3SVQQQyAmZno6rVrS0tLOzvbBlNRl7MAtLCwcPP7m2VZtlqt9fV1gwJ49MMjAN1u983mmxfPX4iIqtLd1TvOuaJw169/TcR/ffhzXPN5VADB1FRVTDWLCyGIiCvyzvY2MTMx/s2ViGAwAo37FhFRcT4El8UVTERUFExEADGfXx8DAjMVM8nZhdFIXCMxM4/BI/wnIrP/kVIzFXExhJwzMxEXPH6FmcYWiGAKsMGgpqZq+g+I+ZAJHC6/YgAAAABJRU5ErkJggg=="
     };
 });
 
